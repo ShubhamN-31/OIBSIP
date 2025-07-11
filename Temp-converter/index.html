@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Temperature Converter</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #9698a2);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .converter {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input[type="number"], select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      transition: border 0.3s;
+    }
+
+    input[type="number"]:focus, select:focus {
+      border-color: #6c63ff;
+      outline: none;
+    }
+
+    button {
+      padding: 12px;
+      font-size: 16px;
+      background-color: #6c63ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #574fd6;
+    }
+
+    #result {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #f5f5f5;
+      padding: 12px;
+      border-radius: 10px;
+      color: #333;
+      margin-top: 10px;
+      border: 2px dashed #6c63ff;
+    }
+
+    label {
+      font-weight: 500;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>🌡️ Temperature Converter</h2>
+
+    <div class="converter">
+      <input type="number" id="temperature" placeholder="Enter temperature" />
+
+      <div>
+        <label for="unitFrom">From:</label>
+        <select id="unitFrom">
+          <option value="celsius">Celsius (°C)</option>
+          <option value="fahrenheit">Fahrenheit (°F)</option>
+          <option value="kelvin">Kelvin (K)</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="unitTo">To:</label>
+        <select id="unitTo">
+          <option value="celsius">Celsius (°C)</option>
+          <option value="fahrenheit">Fahrenheit (°F)</option>
+          <option value="kelvin">Kelvin (K)</option>
+        </select>
+      </div>
+
+      <button onclick="convertTemperature()">Convert</button>
+
+      <div id="result">Converted temperature will appear here</div>
+    </div>
+  </div>
+
+  <script>
+    function convertTemperature() {
+      const tempInput = document.getElementById('temperature').value;
+      const fromUnit = document.getElementById('unitFrom').value;
+      const toUnit = document.getElementById('unitTo').value;
+      const resultDiv = document.getElementById('result');
+
+      const temp = parseFloat(tempInput);
+      if (isNaN(temp)) {
+        resultDiv.textContent = "❗ Please enter a valid number.";
+        resultDiv.style.color = "red";
+        return;
+      }
+
+      resultDiv.style.color = "#333"; 
+
+      let tempInKelvin;
+
+      switch (fromUnit) {
+        case 'celsius':
+          tempInKelvin = temp + 273.15;
+          break;
+        case 'fahrenheit':
+          tempInKelvin = (temp - 32) * 5 / 9 + 273.15;
+          break;
+        case 'kelvin':
+          tempInKelvin = temp;
+          break;
+      }
+
+      let convertedTemp;
+
+      switch (toUnit) {
+        case 'celsius':
+          convertedTemp = tempInKelvin - 273.15;
+          break;
+        case 'fahrenheit':
+          convertedTemp = (tempInKelvin - 273.15) * 9 / 5 + 32;
+          break;
+        case 'kelvin':
+          convertedTemp = tempInKelvin;
+          break;
+      }
+
+      const unitSymbols = {
+        celsius: "°C",
+        fahrenheit: "°F",
+        kelvin: "K"
+      };
+
+      resultDiv.textContent = `✅ Result: ${convertedTemp.toFixed(2)} ${unitSymbols[toUnit]}`;
+    }
+  </script>
+
+</body>
+</html>
